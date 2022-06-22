@@ -1,5 +1,6 @@
 import pycurl
 import certifi
+import re
 from io import BytesIO
 
 def getURLData(URL):
@@ -24,6 +25,11 @@ def main():
     secondCurrecyCode="gbp"
     finalURL= f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/{exchangeDate}/currencies/{firstCurrencyCode}.json"
     URLjson=getURLData(finalURL)
+    URLjson= re.sub(r'"', "", URLjson)
+    URLjson= re.sub(r',', "", URLjson)
+    URLjson= re.sub(r'{\n\s*.*\n\s*.*', "", URLjson)
+    URLjson= re.sub(r'.*}\n.*', "", URLjson)
+    #for line in URLjson.split("\n"):
     print(URLjson)
 
 if __name__=="__main__":
