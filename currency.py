@@ -24,20 +24,28 @@ def findSecondCurrencyCode(URLjson,secondCurrecyCode):
         line=re.search(secondCurrecyCode+r'.*', URLjson)
     return line.group()
 
-
-def main():
-    exchangeDate="latest"
-    firstCurrencyCode="eur"
-    secondCurrecyCode="gbp"
-    finalURL= f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/{exchangeDate}/currencies/{firstCurrencyCode}.json"
-    URLjson=getURLData(finalURL)
+def cleanURLData(URLjson):
     URLjson= re.sub(r'"', "", URLjson)
     URLjson= re.sub(r',', "", URLjson)
     URLjson= re.sub(r'{\n\s*.*\n\s*.*', "", URLjson)
     URLjson= re.sub(r'.*}\n.*', "", URLjson)
+    return URLjson
+
+def main():
+    exchangeDate=input("Enter a date in (yyyy-mm-dd) format. leave blank for latest data: ")
+    if exchangeDate=="":
+        exchangeDate="latest"
+    firstCurrencyCode=input("Enter first currency shortcode(eg:usd,gbp,cad): ")
+    currencyAmount=input("Enter the amount of currency to convert: ")
+    secondCurrecyCode=input("Enter second currency shortcode: ")
+    finalURL= f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/{exchangeDate}/currencies/{firstCurrencyCode}.json"
+    URLjson=getURLData(finalURL)
+    URLjson=cleanURLData(URLjson)
     line=findSecondCurrencyCode(URLjson,secondCurrecyCode)
     line=re.sub(r'.+:\W', "", line)
-    print(line)
+    convertedCurrency=float(line)*int(currencyAmount)
+    convertedCurrency=round(convertedCurrency,2)
+    print(f"at {exchangeDate} {currencyAmount} {firstCurrencyCode} is worth {convertedCurrency} {secondCurrecyCode}")
 
 if __name__=="__main__":
     main()
