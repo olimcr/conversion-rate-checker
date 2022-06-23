@@ -3,4 +3,3 @@
 
 TODO:
     validate user input
-    trim result to two decimals
