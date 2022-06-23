@@ -19,6 +19,12 @@ def getURLData(URL):
     body=body.decode('iso-8859-1')
     return body
 
+def findSecondCurrencyCode(URLjson,secondCurrecyCode):
+    for line in URLjson.split("\n"):
+        line=re.search(secondCurrecyCode+r'.*', URLjson)
+    return line.group()
+
+
 def main():
     exchangeDate="latest"
     firstCurrencyCode="eur"
@@ -29,8 +35,9 @@ def main():
     URLjson= re.sub(r',', "", URLjson)
     URLjson= re.sub(r'{\n\s*.*\n\s*.*', "", URLjson)
     URLjson= re.sub(r'.*}\n.*', "", URLjson)
-    #for line in URLjson.split("\n"):
-    print(URLjson)
+    line=findSecondCurrencyCode(URLjson,secondCurrecyCode)
+    line=re.sub(r'.+:\W', "", line)
+    print(line)
 
 if __name__=="__main__":
     main()
