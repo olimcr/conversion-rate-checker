@@ -2,7 +2,7 @@ import pycurl
 import certifi
 import re
 from io import BytesIO
-
+#https://github.com/fawazahmed0/currency-api#readme
 def getURLData(URL):
     #stolen shamelessly from the pycurl documentation site. http://pycurl.io/docs/latest/quickstart.html and edited a little for my own ends.
     buffer = BytesIO()
@@ -38,6 +38,9 @@ def main():
     firstCurrencyCode=input("Enter first currency shortcode(eg:usd,gbp,cad): ")
     currencyAmount=input("Enter the amount of currency to convert: ")
     secondCurrecyCode=input("Enter second currency shortcode: ")
+    if(firstCurrencyCode==secondCurrecyCode):
+        print(f"at {exchangeDate} {currencyAmount} {firstCurrencyCode} is worth {currencyAmount} {secondCurrecyCode}")
+        exit()
     finalURL= f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/{exchangeDate}/currencies/{firstCurrencyCode}.json"
     URLjson=getURLData(finalURL)
     URLjson=cleanURLData(URLjson)
